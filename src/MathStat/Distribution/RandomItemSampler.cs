@@ -30,12 +30,29 @@ namespace MathStat.Distribution
                 .ToList();
         }
 
+        /// <summary>
+        /// Returns a random item according to the frequency distribution.
+        /// </summary>
         public TItem Next()
         {
             var minValue = _rangeItems.First().MinValue;
             var maxValue = _rangeItems.Last().MaxValue;
             var num = _random.Next(minValue, maxValue + 1);
             return _rangeItems.BinarySearch(num, new NumberRangeComparer<TItem>());
-        }      
+        }
+
+        /// <summary>
+        /// Returns a number of items according to the frequency distribution, compiled into a <c>FrequencyTable</c>.
+        /// </summary>
+        public FrequencyTable<TItem> Next(int numberOfItems)
+        {
+            var frequencyTable = new FrequencyTable<TItem>();
+            for (int count = 1; count <= numberOfItems; count++)
+            {
+                var item = Next();
+                frequencyTable.AddOrUpdate(item, 1);
+            }
+            return frequencyTable;
+        }
     }
 }

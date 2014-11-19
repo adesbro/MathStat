@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathStat", "MathStat\MathStat.csproj", "{5ED22256-1EA0-457A-9F85-A6B4513EFE0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathStat.Example.Console", "MathStat.Example.Console\MathStat.Example.Console.csproj", "{8079E54B-66BD-4DC2-BC51-959C7AAB2007}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5ED22256-1EA0-457A-9F85-A6B4513EFE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ED22256-1EA0-457A-9F85-A6B4513EFE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ED22256-1EA0-457A-9F85-A6B4513EFE0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8079E54B-66BD-4DC2-BC51-959C7AAB2007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8079E54B-66BD-4DC2-BC51-959C7AAB2007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8079E54B-66BD-4DC2-BC51-959C7AAB2007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8079E54B-66BD-4DC2-BC51-959C7AAB2007}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
