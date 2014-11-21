@@ -42,13 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Distribution\BitArrayFrequencyAnalyser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Distribution\CumulativeDistribution.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Distribution\FrequencyRow.cs" />
     <Compile Include="Distribution\FrequencyTable.cs" />
+    <Compile Include="Distribution\IRange.cs" />
     <Compile Include="Distribution\IRangeComparer.cs" />
     <Compile Include="Distribution\ListExtensions.cs" />
-    <Compile Include="Distribution\NumberRangeComparer.cs" />
+    <Compile Include="Distribution\Int32RangeComparer.cs" />
     <Compile Include="Distribution\RandomItemSampler.cs" />
-    <Compile Include="Distribution\RangeItem.cs" />
+    <Compile Include="Distribution\CumulativeProbabilityItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

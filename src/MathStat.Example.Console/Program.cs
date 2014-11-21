@@ -18,6 +18,7 @@ namespace MathStat.Example.Console
                 new FrequencyRow<string> { Item = "Freya", Occurrences = 32 },
                 new FrequencyRow<string> { Item = "Lars", Occurrences = 150 },
                 new FrequencyRow<string> { Item = "Jenny", Occurrences = 66 },
+                new FrequencyRow<string> { Item = "Hector", Occurrences = 29 },
             });
 
             OutputFrequencyTable("Hard-coded", sampleFrequencies);
@@ -31,17 +32,35 @@ namespace MathStat.Example.Console
             var generatedFrequencies = sampler.Next(numberOfSamples);
 
             OutputFrequencyTable("Generated", generatedFrequencies);
+            OutputCumlativeDistribution("Generated", generatedFrequencies);
+
+            var equalizerFrequences = sampleFrequencies.CreateNormalizingFrequencies(sampleFrequencies.TotalOccurrences, 1);
+
+            OutputFrequencyTable("Equalizer", equalizerFrequences);
+            OutputCumlativeDistribution("Equalizer", equalizerFrequences);
 
             System.Console.ReadKey();
         }
 
-        private static void OutputFrequencyTable(string name, FrequencyTable<string> sampleFrequencies)
+        private static void OutputCumlativeDistribution(string name, FrequencyTable<string> frequencies)
         {
-            System.Console.WriteLine("{0} frequencies as a %", name);
-            foreach (var row in sampleFrequencies.OrderBy(f => f.Item))
+            System.Console.WriteLine("{0} cumulative distribution", name);
+            var distribution = new CumulativeDistribution<string>(frequencies);
+
+            foreach (var distributionItem in distribution)
             {
-                System.Console.WriteLine(" - {0} = {1:F2}%", row.Item,
-                    100.0*row.Occurrences/sampleFrequencies.TotalOccurrences);
+                System.Console.WriteLine(" - {0} = {1:F4}", distributionItem.Item, distributionItem.CumulativeProbability);
+            }
+            System.Console.WriteLine();
+        }
+
+        private static void OutputFrequencyTable(string name, FrequencyTable<string> frequencies)
+        {
+            System.Console.WriteLine("{0} frequencies - total occurrences = {1}", name, frequencies.TotalOccurrences);
+            foreach (var row in frequencies.OrderBy(f => f.Occurrences))
+            {
+                System.Console.WriteLine(" - {0} = {1:F2}% - {2}", row.Item,
+                    100.0*row.Occurrences/frequencies.TotalOccurrences, row.Occurrences);
             }
             System.Console.WriteLine();
         }

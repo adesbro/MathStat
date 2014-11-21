@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 
 namespace MathStat.Distribution
 {
@@ -11,23 +8,15 @@ namespace MathStat.Distribution
     /// </summary>
     /// <remarks>http://en.wikipedia.org/wiki/Pseudo-random_number_sampling</remarks>
     public class RandomItemSampler<TItem>
+        where TItem : class
     {
         private readonly Random _random;
-        private readonly List<RangeItem<TItem, int>> _rangeItems;
+        private readonly CumulativeDistribution<TItem> _distribution; 
 
         public RandomItemSampler(Random random, FrequencyTable<TItem> frequencyDistribution)
         {
             _random = random;
-            var runningTotal = 1;
-            _rangeItems = frequencyDistribution
-                .Select(row => new RangeItem<TItem, int>
-                {
-                    Item = row.Item,
-                    MinValue = runningTotal,
-                    MaxValue = runningTotal + row.Occurrences
-                })
-                .Pipe(item => runningTotal = item.MaxValue + 1)
-                .ToList();
+            _distribution = new CumulativeDistribution<TItem>(frequencyDistribution);
         }
 
         /// <summary>
@@ -35,12 +24,12 @@ namespace MathStat.Distribution
         /// </summary>
         public TItem Next()
         {
-            var minValue = _rangeItems.First().MinValue;
-            var maxValue = _rangeItems.Last().MaxValue;
-            var num = _random.Next(minValue, maxValue + 1);
-            return _rangeItems.BinarySearch(num, new NumberRangeComparer<TItem>());
+            var minValue = _distribution.MinValue;
+            var maxValue = _distribution.MaxValue;
+            var randomValue = _random.Next(minValue, maxValue + 1);
+            return _distribution[randomValue].Item;
         }
-
+        
         /// <summary>
         /// Returns a number of items according to the frequency distribution, compiled into a <c>FrequencyTable</c>.
         /// </summary>
