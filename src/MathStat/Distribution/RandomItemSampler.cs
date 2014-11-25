@@ -1,4 +1,4 @@
-using System;
+using System.Security.Cryptography;
 
 namespace MathStat.Distribution
 {
@@ -10,12 +10,12 @@ namespace MathStat.Distribution
     public class RandomItemSampler<TItem>
         where TItem : class
     {
-        private readonly Random _random;
-        private readonly CumulativeDistribution<TItem> _distribution; 
+        private readonly CryptoRandom _random;
+        private readonly CumulativeDistribution<TItem> _distribution;
 
-        public RandomItemSampler(Random random, FrequencyTable<TItem> frequencyDistribution)
+        public RandomItemSampler(RandomNumberGenerator randomNumberGenerator, FrequencyTable<TItem> frequencyDistribution)
         {
-            _random = random;
+            _random = new CryptoRandom(randomNumberGenerator);
             _distribution = new CumulativeDistribution<TItem>(frequencyDistribution);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using MathStat.Distribution;
 
 namespace MathStat.Example.Console
@@ -23,16 +24,18 @@ namespace MathStat.Example.Console
 
             OutputFrequencyTable("Hard-coded", sampleFrequencies);
 
-            const int numberOfSamples = 10000;
+            const int numberOfSamples = 100000;
             System.Console.WriteLine("Generating {0:N0} samples using hard-coded frequency distribution", numberOfSamples);
             System.Console.WriteLine();
 
-            var random = new Random(Environment.TickCount);
-            var sampler = new RandomItemSampler<string>(random, sampleFrequencies);
-            var generatedFrequencies = sampler.Next(numberOfSamples);
+            using (var random = new RNGCryptoServiceProvider())
+            {
+                var sampler = new RandomItemSampler<string>(random, sampleFrequencies);
+                var generatedFrequencies = sampler.Next(numberOfSamples);
 
-            OutputFrequencyTable("Generated", generatedFrequencies);
-            OutputCumlativeDistribution("Generated", generatedFrequencies);
+                OutputFrequencyTable("Generated", generatedFrequencies);
+                OutputCumlativeDistribution("Generated", generatedFrequencies);
+            }
 
             var equalizerFrequences = sampleFrequencies.CreateNormalizingFrequencies(sampleFrequencies.TotalOccurrences, 1);
 

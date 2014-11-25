@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoRandom.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Distribution\BitArrayFrequencyAnalyser.cs">
       <SubType>Code</SubType>
     </Compile>
