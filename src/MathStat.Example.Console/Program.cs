@@ -10,7 +10,7 @@ namespace MathStat.Example.Console
         static void Main(string[] args)
         {
             var sampleFrequencies = new FrequencyTable<string>();
-            sampleFrequencies.AddRange(new []
+            sampleFrequencies.AddRange(new[]
             {
                 new FrequencyRow<string> { Item = "Adrian", Occurrences = 20 },
                 new FrequencyRow<string> { Item = "John", Occurrences = 85 },
@@ -28,18 +28,17 @@ namespace MathStat.Example.Console
             System.Console.WriteLine("Generating {0:N0} samples using hard-coded frequency distribution", numberOfSamples);
             System.Console.WriteLine();
 
-            using (var random = new RNGCryptoServiceProvider())
+            FrequencyTable<string> generatedFrequencies;
+            using (new ConsoleTimeMeasure("Generate {0:N0} samples", numberOfSamples))
             {
-                FrequencyTable<string> generatedFrequencies;
-                using (new ConsoleTimeMeasure("Generate {0:N0} samples", numberOfSamples))
+                using (var sampler = new RandomItemSampler<string>(sampleFrequencies))
                 {
-                    var sampler = new RandomItemSampler<string>(random, sampleFrequencies);
                     generatedFrequencies = sampler.Next(numberOfSamples);
                 }
-
-                OutputFrequencyTable("Generated", generatedFrequencies);
-                OutputCumlativeDistribution("Generated", generatedFrequencies);
             }
+
+            OutputFrequencyTable("Generated", generatedFrequencies);
+            OutputCumlativeDistribution("Generated", generatedFrequencies);
 
             FrequencyTable<string> equalizerFrequences;
             using (new ConsoleTimeMeasure("Create normalizing frequencies with {0:N0} total occurrences", sampleFrequencies.TotalOccurrences))
@@ -71,7 +70,7 @@ namespace MathStat.Example.Console
             foreach (var row in frequencies.OrderBy(f => f.Occurrences))
             {
                 System.Console.WriteLine(" - {0} = {1:F2}% - {2}", row.Item,
-                    100.0*row.Occurrences/frequencies.TotalOccurrences, row.Occurrences);
+                    100.0 * row.Occurrences / frequencies.TotalOccurrences, row.Occurrences);
             }
             System.Console.WriteLine();
         }

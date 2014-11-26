@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 
 namespace MathStat.Distribution
@@ -7,15 +8,15 @@ namespace MathStat.Distribution
     /// to a given frequency distribution.
     /// </summary>
     /// <remarks>http://en.wikipedia.org/wiki/Pseudo-random_number_sampling</remarks>
-    public class RandomItemSampler<TItem>
+    public class RandomItemSampler<TItem> : IDisposable
         where TItem : class
     {
         private readonly CryptoRandom _random;
         private readonly CumulativeDistribution<TItem> _distribution;
 
-        public RandomItemSampler(RandomNumberGenerator randomNumberGenerator, FrequencyTable<TItem> frequencyDistribution)
+        public RandomItemSampler(FrequencyTable<TItem> frequencyDistribution)
         {
-            _random = new CryptoRandom(randomNumberGenerator);
+            _random = new CryptoRandom();
             _distribution = new CumulativeDistribution<TItem>(frequencyDistribution);
         }
 
@@ -43,5 +44,34 @@ namespace MathStat.Distribution
             }
             return frequencyTable;
         }
+
+        #region IDisposable Implementation
+
+        private bool IsDisposed { get; set; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (!IsDisposed)
+            {
+                if (isDisposing)
+                {
+                    _random.Dispose();
+                }
+                IsDisposed = true;
+            }
+        }
+
+        ~RandomItemSampler()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

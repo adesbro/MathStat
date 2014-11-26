@@ -60,6 +60,7 @@
     <Compile Include="Distribution\RandomItemSampler.cs" />
     <Compile Include="Distribution\CumulativeProbabilityItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Random.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
