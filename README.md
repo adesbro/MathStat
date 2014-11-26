@@ -12,5 +12,6 @@ This project contains code for:
 - Cumulative distribution
 - Frequency analysis
 - Pseudo-random sampling
+- CryptoRandom (a more random random)
 
 

@@ -9,6 +9,9 @@ namespace MathStat
     /// </summary>
     /// <remarks>
     /// Useful help from MSDN article: http://msdn.microsoft.com/en-us/magazine/cc163367.aspx
+    /// Types such as Int32 and Int64 are explicitly defined as the .NET types (not C# 
+    /// predefined types int and long) because the size is critical and it makes it 
+    /// absolutely clear.
     /// </remarks>
     public class CryptoRandom
     {
@@ -24,12 +27,12 @@ namespace MathStat
         /// </summary>
         /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
         /// <param name="maxValue">The exclusive upper bound of the random number returned.</param>
-        public int Next(int minValue, int maxValue)
+        public Int32 Next(Int32 minValue, Int32 maxValue)
         {
             if (minValue > maxValue) throw new ArgumentOutOfRangeException("minValue");
             if (minValue == maxValue) return minValue;
 
-            const long max = (1 + (Int64)UInt32.MaxValue);
+            const Int64 max = (1 + (Int64)UInt32.MaxValue);
             var range = maxValue - minValue;
             
             while (true)
@@ -47,7 +50,7 @@ namespace MathStat
         /// Returns a non-negative random number less than the specified maximum.
         /// </summary>
         /// <param name="maxValue">The exclusive upper bound of the random number returned.</param>
-        public int Next(int maxValue)
+        public Int32 Next(Int32 maxValue)
         {
             return Next(0, maxValue);
         }
@@ -55,7 +58,7 @@ namespace MathStat
         /// <summary>
         /// Returns a non-negative random number.
         /// </summary>
-        public int Next()
+        public Int32 Next()
         {
             return GetRandomInt32();
         }
@@ -63,9 +66,9 @@ namespace MathStat
         /// <summary>
         /// Returns a random number between 0.0 and 1.0.
         /// </summary>
-        public double NextDouble()
+        public Double NextDouble()
         {
-            return ((double) GetRandomUInt32())/UInt32.MaxValue;
+            return ((Double)GetRandomUInt32()) / UInt32.MaxValue;
         }
 
         /// <summary>
@@ -76,17 +79,27 @@ namespace MathStat
             FillWithRandomBytes(buffer);
         }
 
-        private int GetRandomInt32()
+        /// <summary>
+        /// Creates an array of bytes and fills each with a random number.
+        /// </summary>
+        public byte[] NextBytes(Int32 bufferSize)
         {
-            var buffer = new byte[4];
+            var buffer = new byte[bufferSize];
+            FillWithRandomBytes(buffer);
+            return buffer;
+        }
+
+        private Int32 GetRandomInt32()
+        {
+            var buffer = new byte[sizeof(Int32)];
             FillWithRandomBytes(buffer);
             // Strip high-order bit (sign) to keep non-negative
             return BitConverter.ToInt32(buffer, 0) & Int32.MaxValue; 
         }
 
-        private uint GetRandomUInt32()
+        private UInt32 GetRandomUInt32()
         {
-            var buffer = new byte[4];
+            var buffer = new byte[sizeof(UInt32)];
             FillWithRandomBytes(buffer);
             return BitConverter.ToUInt32(buffer, 0);
         }
