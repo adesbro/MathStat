@@ -1,13 +1,11 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Linq;
 using MathStat.Distribution;
 
 namespace MathStat.Example.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(/*string[] args*/)
         {
             var sampleFrequencies = new FrequencyTable<string>();
             sampleFrequencies.AddRange(new[]
@@ -19,7 +17,7 @@ namespace MathStat.Example.Console
                 new FrequencyRow<string> { Item = "Freya", Occurrences = 32 },
                 new FrequencyRow<string> { Item = "Lars", Occurrences = 150 },
                 new FrequencyRow<string> { Item = "Jenny", Occurrences = 66 },
-                new FrequencyRow<string> { Item = "Hector", Occurrences = 29 },
+                new FrequencyRow<string> { Item = "Hector", Occurrences = 29 }
             });
 
             OutputFrequencyTable("Hard-coded", sampleFrequencies);

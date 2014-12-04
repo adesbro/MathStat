@@ -16,11 +16,16 @@ namespace MathStat
     public abstract class Random<TRng> : IDisposable
         where TRng : RandomNumberGenerator, new()
     {
-        protected TRng RandomNumberGenerator { get; set; }
+        private TRng _randomNumberGenerator;
 
-        public Random()
+        protected TRng RandomNumberGenerator
         {
-            RandomNumberGenerator = new TRng();
+            get { return _randomNumberGenerator ?? (_randomNumberGenerator = CreateRandomNumberGenerator()); }
+        }
+
+        protected virtual TRng CreateRandomNumberGenerator()
+        {
+            return new TRng();
         }
 
         /// <summary>
