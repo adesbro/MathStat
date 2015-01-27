@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+      <licenseUrl>https://github.com/adesbro/MathStat</licenseUrl>
+      <projectUrl>https://github.com/adesbro/MathStat</projectUrl>
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+      <releaseNotes>Release notes can be found at https://github.com/adesbro/MathStat </releaseNotes>
+      <copyright>Copyright Adrian Brown 2015</copyright>
+      <tags>.NET C# Statistics Math Frequency Distribution Random</tags>
+  </metadata>
+</package>
