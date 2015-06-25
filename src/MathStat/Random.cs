@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Security.Policy;
 
 namespace MathStat
 {
@@ -75,6 +77,17 @@ namespace MathStat
         public Double NextDouble()
         {
             return ((Double)GetRandomUInt32()) / UInt32.MaxValue;
+        }
+
+        /// <summary>
+        /// Returns a random BigInteger of the size specified which must be a multiple of 8.
+        /// </summary>
+        public BigInteger NextBigInteger(Int32 bits)
+        {
+            if (bits % 8 != 0) throw new ArgumentException("bits must be a multiple of 8");
+
+            var randBytes = NextBytes(bits / 8);
+            return new BigInteger(randBytes);
         }
 
         /// <summary>
