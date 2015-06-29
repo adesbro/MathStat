@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Policy;
 
@@ -80,14 +81,40 @@ namespace MathStat
         }
 
         /// <summary>
-        /// Returns a random BigInteger of the size specified which must be a multiple of 8.
+        /// Returns a random positive BigInteger of the size specified with a maximum value.
+        /// </summary>
+        public BigInteger NextBigInteger(Int32 bits, BigInteger maxValue)
+        {
+            BigInteger result;
+
+            do
+            {
+                result = NextBigInteger(bits);
+            } while (result > maxValue);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a random positive BigInteger of the size specified.
         /// </summary>
         public BigInteger NextBigInteger(Int32 bits)
         {
-            if (bits % 8 != 0) throw new ArgumentException("bits must be a multiple of 8");
+            var remainder = bits%8;
+            var numBytes = (remainder == 0) ? (bits/8) : (bits/8) + 1;
 
-            var randBytes = NextBytes(bits / 8);
-            return new BigInteger(randBytes);
+            var randBytes = NextBytes(numBytes);
+
+            // clear unwanted bits
+            if (remainder > 0)
+            {
+                int lastByte = Convert.ToInt32(randBytes[numBytes - 1]);
+                randBytes[numBytes - 1] = Convert.ToByte(lastByte >> (8 - remainder));
+            }
+
+            // ensure positive result
+            var result = new BigInteger(randBytes);
+            return (result.Sign == 1) ? result : -result;
         }
 
         /// <summary>

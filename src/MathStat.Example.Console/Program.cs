@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using MathStat.Distribution;
 
 namespace MathStat.Example.Console
