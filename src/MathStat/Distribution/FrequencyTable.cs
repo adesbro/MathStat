@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using MoreLinq;
 
 namespace MathStat.Distribution
@@ -11,19 +13,23 @@ namespace MathStat.Distribution
     /// <remarks>http://en.wikipedia.org/wiki/Frequency_distribution</remarks>
     public class FrequencyTable<TItem> : IEnumerable<FrequencyRow<TItem>>
     {
-        private readonly List<FrequencyRow<TItem>> _frequencies;
-        private readonly Dictionary<TItem, FrequencyRow<TItem>> _itemLookup;
+        private readonly ConcurrentBag<FrequencyRow<TItem>> _frequencies;
+        private readonly ConcurrentDictionary<TItem, FrequencyRow<TItem>> _itemLookup;
+        private int _totalOccurrences;
 
         public FrequencyTable()
         {
-            _frequencies = new List<FrequencyRow<TItem>>();
-            _itemLookup = new Dictionary<TItem, FrequencyRow<TItem>>();
+            _frequencies = new ConcurrentBag<FrequencyRow<TItem>>();
+            _itemLookup = new ConcurrentDictionary<TItem, FrequencyRow<TItem>>();
         }
 
         /// <summary>
         /// The sum of <c>Occurrences</c> for each row.
         /// </summary>
-        public int TotalOccurrences { get; private set; }
+        public int TotalOccurrences
+        {
+            get { return _totalOccurrences; }
+        }
         
         /// <summary>
         /// Adds a new row to the table.
@@ -32,7 +38,7 @@ namespace MathStat.Distribution
         {
             _frequencies.Add(row);
             _itemLookup[row.Item] = row;
-            TotalOccurrences += row.Occurrences;
+            Interlocked.Add(ref _totalOccurrences, row.Occurrences);
             return row;
         }
 
@@ -53,8 +59,8 @@ namespace MathStat.Distribution
             if (_itemLookup.ContainsKey(value))
             {
                 var row = _itemLookup[value];
-                row.Occurrences += count;
-                TotalOccurrences += count;
+                row.AddOccurrences(count);
+                Interlocked.Add(ref _totalOccurrences, count);
                 return row;
             }
 
@@ -96,10 +102,18 @@ namespace MathStat.Distribution
 
             return result;
         }
+
+        public void Merge(IEnumerable<FrequencyRow<TItem>> rows)
+        {
+            foreach (var row in rows)
+            {
+                AddOrUpdate(row.Item, row.Occurrences);
+            }
+        }
         
         public IEnumerator<FrequencyRow<TItem>> GetEnumerator()
         {
-            return ((IEnumerable<FrequencyRow<TItem>>)_frequencies).GetEnumerator();
+            return _frequencies.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using MathStat.Distribution;
 
@@ -8,6 +9,15 @@ namespace MathStat.Example.Console
     {
         static void Main(/*string[] args*/)
         {
+            var random = new CryptoRandom();
+            var example1 = new FrequencyTable<string>();
+            for (decimal i = 0.00m; i < 1.00m; i += 0.1m)
+            {
+
+                example1.AddOrUpdate(i.ToString("0.00"), random.Next(10000));
+            }
+            OutputCumlativeDistribution("example", example1);
+
             var sampleFrequencies = new FrequencyTable<string>();
             sampleFrequencies.AddRange(new[]
             {
@@ -51,10 +61,11 @@ namespace MathStat.Example.Console
             System.Console.ReadKey();
         }
 
-        private static void OutputCumlativeDistribution(string name, FrequencyTable<string> frequencies)
+        private static void OutputCumlativeDistribution<T>(string name, FrequencyTable<T> frequencies)
+            where T : class
         {
             System.Console.WriteLine("{0} cumulative distribution", name);
-            var distribution = new CumulativeDistribution<string>(frequencies);
+            var distribution = new CumulativeDistribution<T>(frequencies);
 
             foreach (var distributionItem in distribution)
             {
