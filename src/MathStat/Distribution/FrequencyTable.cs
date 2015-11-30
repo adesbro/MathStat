@@ -15,7 +15,7 @@ namespace MathStat.Distribution
     {
         private readonly ConcurrentBag<FrequencyRow<TItem>> _frequencies;
         private readonly ConcurrentDictionary<TItem, FrequencyRow<TItem>> _itemLookup;
-        private int _totalOccurrences;
+        private long _totalOccurrences;
 
         public FrequencyTable()
         {
@@ -26,7 +26,7 @@ namespace MathStat.Distribution
         /// <summary>
         /// The sum of <c>Occurrences</c> for each row.
         /// </summary>
-        public int TotalOccurrences
+        public long TotalOccurrences
         {
             get { return _totalOccurrences; }
         }
@@ -54,7 +54,7 @@ namespace MathStat.Distribution
         /// If the item exists (as a row), the <c>count</c> will be added to the <c>Occurrences</c> value.
         /// If the item does not exist, a new row will be added and <c>Occurrences</c> set the <c>count</c>.
         /// </summary>
-        public FrequencyRow<TItem> AddOrUpdate(TItem value, int count)
+        public FrequencyRow<TItem> AddOrUpdate(TItem value, long count)
         {
             if (_itemLookup.ContainsKey(value))
             {

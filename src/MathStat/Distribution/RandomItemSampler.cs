@@ -26,7 +26,7 @@ namespace MathStat.Distribution
         {
             var minValue = _distribution.MinValue;
             var maxValue = _distribution.MaxValue;
-            var randomValue = _random.Next(minValue, maxValue + 1);
+            var randomValue = _random.Next((int)minValue, (int)maxValue + 1);
             return _distribution[randomValue].Item;
         }
         

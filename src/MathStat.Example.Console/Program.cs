@@ -52,7 +52,7 @@ namespace MathStat.Example.Console
             FrequencyTable<string> equalizerFrequences;
             using (new ConsoleTimeMeasure("Create normalizing frequencies with {0:N0} total occurrences", sampleFrequencies.TotalOccurrences))
             {
-                equalizerFrequences = sampleFrequencies.CreateNormalizingFrequencies(sampleFrequencies.TotalOccurrences, 1);
+                equalizerFrequences = sampleFrequencies.CreateNormalizingFrequencies((int)sampleFrequencies.TotalOccurrences, 1);
             }
 
             OutputFrequencyTable("Equalizer", equalizerFrequences);

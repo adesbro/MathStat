@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Distribution\FrequencyRow.cs" />
     <Compile Include="Distribution\FrequencyTable.cs" />
+    <Compile Include="Distribution\Int64RangeComparer.cs" />
     <Compile Include="Distribution\IRange.cs" />
     <Compile Include="Distribution\IRangeComparer.cs" />
     <Compile Include="Distribution\ListExtensions.cs" />

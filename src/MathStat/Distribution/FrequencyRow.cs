@@ -4,17 +4,17 @@ namespace MathStat.Distribution
 {
     public class FrequencyRow<TItem>
     {
-        private int _occurrences;
+        private long _occurrences;
 
         public TItem Item { get; set; }
 
-        public int Occurrences
+        public long Occurrences
         {
             get { return _occurrences; }
             set { _occurrences = value; }
         }
 
-        public void AddOccurrences(int count)
+        public void AddOccurrences(long count)
         {
             Interlocked.Add(ref _occurrences, count);
         }
