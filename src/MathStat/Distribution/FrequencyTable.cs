@@ -120,5 +120,17 @@ namespace MathStat.Distribution
         {
             return GetEnumerator();
         }
+
+        public FrequencyTable<long> ToFrequencyCounts()
+        {
+            var rows = this
+                .GroupBy(fd => fd.Occurrences)
+                .Select(row => new FrequencyRow<long> { Item = row.Key, Occurrences = row.Count() });
+
+            var table = new FrequencyTable<long>();
+            table.AddRange(rows);
+
+            return table;
+        }   
     }
 }

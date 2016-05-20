@@ -1,0 +1,1 @@
+nuget pack MathStat.csproj -IncludeReferencedProjects -Prop Configuration=Release
