@@ -30,6 +30,14 @@ namespace MathStat.Distribution
         {
             get { return _totalOccurrences; }
         }
+
+        /// <summary>
+        /// Returns <c>true</c> if the item value exists within the frequency table.
+        /// </summary>
+        public bool ContainsItem(TItem value)
+        {
+            return _itemLookup.ContainsKey(value);
+        }
         
         /// <summary>
         /// Adds a new row to the table.
