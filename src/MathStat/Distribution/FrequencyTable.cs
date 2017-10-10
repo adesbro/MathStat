@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,21 @@ namespace MathStat.Distribution
         }
 
         /// <summary>
+        /// Returns the <c>FrequencyRow</c> instance with the specified value, if it exists.
+        /// </summary>
+        public FrequencyRow<TItem> this[TItem value]
+        {
+            get
+            {
+                if (!_itemLookup.ContainsKey(value))
+                {
+                    throw new IndexOutOfRangeException("The value specified does not exist in the table");
+                }
+                return _itemLookup[value];
+            }
+        } 
+
+        /// <summary>
         /// The sum of <c>Occurrences</c> for each row.
         /// </summary>
         public long TotalOccurrences
@@ -38,7 +54,18 @@ namespace MathStat.Distribution
         {
             return _itemLookup.ContainsKey(value);
         }
-        
+
+        /// <summary>
+        /// Returns the <c>FrequencyRow</c> instance with the specified value, if it exists. Unlike the [] indexer, this method
+        /// will return a <c>NULL</c> if no row exists.
+        /// </summary>
+        public FrequencyRow<TItem> GetRowByItemValue(TItem value)
+        {
+            return _itemLookup.ContainsKey(value)
+                ? _itemLookup[value]
+                : null;
+        }
+
         /// <summary>
         /// Adds a new row to the table.
         /// </summary>
