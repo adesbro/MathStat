@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Security.Policy;
 
 namespace MathStat
 {
